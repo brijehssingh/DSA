@@ -1,0 +1,148 @@
+// Online C++ compiler to run C++ program online
+#include <bits/stdc++.h>
+using namespace std;
+ 
+ 
+ void fill(vector<int>&arr , vector<int>&seg,int i , int l , int r){
+     
+         
+     if(l==r){
+         seg[i] = arr[l];
+          return; 
+           
+     }
+     int mid = (l+r)/2;
+      
+     //left
+     fill(arr, seg , 2*i+1, l , mid );
+     //right
+      fill( arr, seg , 2*i+2, mid+1, r);
+        
+          seg[i] = seg[2*i+1] + seg[2*i+2];
+            
+     
+ }
+ 
+ // update 
+  
+     void update( vector<int>&seg , int i , int val , int l , int r){
+         
+         
+         if(l==r) {
+             seg[i] = val ;
+              return;
+               
+         }
+         
+         int mid = (l+r)/2 ;
+          
+         
+         // left 
+            
+            if(l<=mid){
+                
+                 update(seg, 2*i+1 , val , l , mid);
+                  
+                   
+                 
+                
+            }
+            
+            else{
+                
+                update(seg, 2*i+2 , val , mid+1 ,r); 
+                
+            }
+         
+         
+         
+         seg[i] = seg[2*i+1] + seg[2*i+2];
+          
+           
+         
+         
+     }
+ 
+ 
+ 
+ 
+int sum(vector<int>&seg, int i , int st, int end , int l ,int r){
+    
+    
+    //
+     if(st>r || end <l ) {
+         return 0 ; 
+     }
+     
+     
+     // match 
+      
+      if(st<=l &&end>=r){
+          return seg[i];
+           
+      }
+      
+       int mid =(l+r)/2; 
+       
+          int left = sum(seg , 2*i+1 , st, end, l , mid);
+           int right = sum(seg , 2*i+2 , st , end , mid+1 , r);
+            
+             
+             return left+right;
+              
+        
+       
+    
+    
+    
+}
+ 
+
+int main() {
+    // Write C++ code here
+       
+       
+       vector<int>arr = {1,2,3,4,5};
+        int n = arr.size();
+         
+        vector<int>seg(2*n+1,0);
+         
+         fill(arr , seg , 0 , 0 , n-1);
+            
+             for(auto i : seg){
+                 
+                 cout<<i<<" "; 
+                 
+                 
+                 
+             }
+            
+            cout<<endl;
+            
+            
+            
+            // update 
+             
+             update(seg , 2 , 4 , 0 , n-1 );
+              
+               for(auto i : seg){
+                   cout<<i<<" " ;
+                     
+                     
+               }
+               
+               
+               cout<<endl;
+                
+            
+            
+            // range sum query
+            int val =sum( seg, 0 , 1,3 , 0 , n-1);
+              
+        cout<<val;
+         
+           
+     
+        
+    return 0;
+}
