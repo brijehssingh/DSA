@@ -39,7 +39,7 @@ using namespace std;
          
          // left 
             
-            if(l<=mid){
+            if(i<=mid){
                 
                  update(seg, 2*i+1 , val , l , mid);
                   
